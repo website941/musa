@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manchester University NHS Foundation Trust - Official Digital Specification & Web Architecture</title>
+  <meta name="description" content="Delivering Outstanding Patient Care, Clinical Research & Digital Health Services Across Greater Manchester - Comprehensive Level 3 Educational Web Specification">
+  <style>
+    :root {
+      --primary: #005EB8;
+      --secondary: #003087;
+      --text: #171717;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background-color: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      background: #0f172a;
+      color: #ffffff;
+      border-bottom: 3px solid var(--primary);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .top-bar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+    .brand-badge {
+      font-size: 0.7rem;
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      overflow-x: auto;
+    }
+    nav button {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    nav button:hover, nav button.active {
+      color: #ffffff;
+      border-bottom-color: var(--primary);
+      background: rgba(255,255,255,0.05);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+    }
+    .page-section {
+      display: none;
+    }
+    .page-section.active {
+      display: block;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: white;
+      padding: 3.5rem 2rem;
+      border-radius: 1rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #334155;
+    }
+    .hero-tagline {
+      color: #38bdf8;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    .hero h1 {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      font-weight: 800;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: #cbd5e1;
+      max-width: 750px;
+      margin-bottom: 1.5rem;
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .meta-item {
+      font-size: 0.85rem;
+    }
+    .meta-label {
+      color: #94a3b8;
+      display: block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .meta-val {
+      font-weight: 600;
+      color: #f1f5f9;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    }
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: #0f172a;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.375rem;
+      background: #f1f5f9;
+      color: #475569;
+      margin-bottom: 0.75rem;
+    }
+    .risk-critical { background: #fee2e2; color: #991b1b; }
+    .risk-high { background: #ffedd5; color: #9a3412; }
+    .risk-medium { background: #fef9c3; color: #854d0e; }
+    .code-box {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-family: monospace;
+      font-size: 0.8rem;
+      overflow-x: auto;
+      margin-top: 0.75rem;
+    }
+    .level3-note {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 0.75rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+      font-size: 0.825rem;
+      color: #1e3a8a;
+      margin-top: 0.75rem;
+    }
+    .step-card {
+      position: relative;
+      padding-left: 3rem;
+      margin-bottom: 1.5rem;
+    }
+    .step-number {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 3rem 1.5rem 2rem;
+      border-top: 1px solid #1e293b;
+      margin-top: 4rem;
+      font-size: 0.85rem;
+    }
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .interactive-simulator {
+      background: #ffffff;
+      border: 2px solid var(--primary);
+      border-radius: 0.75rem;
+      padding: 1.75rem;
+      margin: 2rem 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.25rem;
+      border-radius: 0.375rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn:hover {
+      opacity: 0.9;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.6rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      margin-top: 0.25rem;
+      margin-bottom: 1rem;
+      font-family: inherit;
+    }
+    @media print {
+      header nav, .btn, .interactive-simulator { display: none !important; }
+      .page-section { display: block !important; margin-bottom: 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header & Sticky Navigation -->
+  <header>
+    <div class="top-bar">
+      <div class="brand">
+        <span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--primary);"></span>
+        <span>Manchester University NHS Foundation Trust</span>
+        <span class="brand-badge">UK Public Healthcare & National Health Service</span>
+      </div>
+      <div style="font-size:0.8rem; color:#94a3b8;">
+        UK Level 3 Educational Web Portfolio
+      </div>
+    </div>
+    <nav id="nav">
+      <button class="active" onclick="switchPage('home')">Home</button>
+      <button onclick="switchPage('about')">About</button>
+      <button onclick="switchPage('services')">Services</button>
+      <button onclick="switchPage('architecture')">Web Architecture</button>
+      <button onclick="switchPage('security')">Security & Risks</button>
+      <button onclick="switchPage('reviews')">Reviews</button>
+      <button onclick="switchPage('sitemap')">Site Map</button>
+      <button onclick="switchPage('userflow')">User Flow</button>
+      <button onclick="switchPage('contact')">Contact</button>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <!-- PAGE 1: HOME -->
+    <section id="page-home" class="page-section active">
+      <div class="hero">
+        <div class="hero-tagline">Delivering Outstanding Patient Care, Clinical Research & Digital Health Services Across Greater Manchester</div>
+        <h1>Accessible, Compassionate and Secure Healthcare for Greater Manchester</h1>
+        <p>Manage hospital outpatient appointments, check emergency department wait times, access verified clinical guidance, request prescription renewals, and communicate safely with your NHS clinical care team.</p>
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span class="meta-label">Headquarters</span>
+            <span class="meta-val">Cobbett House, Oxford Road, Manchester M13 9WL</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Regulator</span>
+            <span class="meta-val">Care Quality Commission (CQC) & Information Commissioner’s Office (ICO)</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Statutory Basis</span>
+            <span class="meta-val">NHS Trust Board of Directors & Council of Governors, accountable to NHS England & CQC</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Founded</span>
+            <span class="meta-val">5 July 1948 (Merged Foundation Trust established October 2017)</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 style="font-size:1.5rem; margin-bottom:1rem;">Overview & Digital Strategy</h2>
+      <p style="font-size:1.05rem; color:#475569; margin-bottom:2rem;">Manchester University NHS Foundation Trust (MFT) is one of the largest acute NHS trusts in the UK, operating 10 hospital sites including Manchester Royal Infirmary, Royal Manchester Children’s Hospital, and Saint Mary’s Hospital. Its digital patient portal and web services coordinate outpatient bookings, electronic prescriptions, clinical trial information, and emergency department wait-time telemetry for over 750,000 residents.</p>
+
+      <h3 style="font-size:1.25rem; margin-bottom:1rem;">Core Digital Services Preview</h3>
+      <div class="card-grid">
+        
+          <div class="card">
+            <span class="badge">Patient Administration</span>
+            <h3>Patient Portal & Outpatient Appointment Booking</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">View upcoming hospital appointments, reschedule clinic dates, access appointment letter PDFs, and receive SMS reminder notifications.</p>
+            <div style="font-size:0.8rem; color:#0f172a; font-weight:600;">Delivery: Secure REST API integration connecting the front-end patient portal to the Trust’s central Patient Administration System (PAS) via NHS login.</div>
+          </div>
+        
+          <div class="card">
+            <span class="badge">Clinical Medication</span>
+            <h3>Electronic Prescription Service (EPS) & Pharmacy Renewal</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Track hospital-dispensed medications, submit repeat prescription requests, and route approved electronic tokens directly to local community pharmacies.</p>
+            <div style="font-size:0.8rem; color:#0f172a; font-weight:600;">Delivery: Compliant with NHS England Spine Electronic Prescription Service API with end-to-end cryptographic digital signatures.</div>
+          </div>
+        
+          <div class="card">
+            <span class="badge">Urgent Care</span>
+            <h3>Emergency Department (A&E) Live Wait-Time Tracker</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Real-time estimated triage and wait-time indicators for adult and paediatric emergency departments across Manchester hospital sites.</p>
+            <div style="font-size:0.8rem; color:#0f172a; font-weight:600;">Delivery: Aggregated queue metrics pushed via Server-Sent Events (SSE) every 5 minutes from Symphony clinical triage systems.</div>
+          </div>
+        
+      </div>
+    </section>
+
+    <!-- PAGE 2: ABOUT -->
+    <section id="page-about" class="page-section">
+      <h2 style="font-size:1.75rem; margin-bottom:0.5rem;">About Manchester University NHS Foundation Trust</h2>
+      <p style="color:#64748b; margin-bottom:2rem;">Statutory constitution, public governance, and digital accessibility compliance.</p>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <h3>Constitution & Regulatory Mandate</h3>
+        <p style="margin-bottom:1rem;">NHS Trust Board of Directors & Council of Governors, accountable to NHS England & CQC</p>
+        <div style="background:#f8fafc; padding:1rem; border-radius:0.5rem;">
+          <strong>Regulated by:</strong> Care Quality Commission (CQC) & Information Commissioner’s Office (ICO)<br>
+          <strong>Operational Sector:</strong> UK Public Healthcare & National Health Service<br>
+          <strong>Head Office:</strong> Cobbett House, Oxford Road, Manchester M13 9WL
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>WCAG 2.2 Level AA & Equality Act 2010 Commitment</h3>
+        <p>All digital web services engineered by NHS Trust comply with UK accessibility regulations, ensuring screen reader compatibility, ARIA semantics, minimum 4.5:1 text contrast, and full keyboard navigability.</p>
+      </div>
+    </section>
+
+    <!-- PAGE 3: SERVICES -->
+    <section id="page-services" class="page-section">
+      <h2 style="font-size:1.75rem; margin-bottom:0.5rem;">Digital Services Directory</h2>
+      <p style="color:#64748b; margin-bottom:2rem;">Full breakdown of online portals, API pipelines, and citizen services.</p>
+
+      <div class="card-grid">
+        
+          <div class="card">
+            <span class="badge">Patient Administration</span>
+            <h3>Patient Portal & Outpatient Appointment Booking</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">View upcoming hospital appointments, reschedule clinic dates, access appointment letter PDFs, and receive SMS reminder notifications.</p>
+            <div style="margin-bottom:0.5rem; font-size:0.8rem; color:#475569;">
+              <strong>Audience:</strong> Referred NHS patients and authorised family carers.
+            </div>
+            <div style="font-size:0.8rem; background:#f1f5f9; padding:0.5rem; border-radius:0.375rem;">
+              <strong>Technical Delivery:</strong> Secure REST API integration connecting the front-end patient portal to the Trust’s central Patient Administration System (PAS) via NHS login.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge">Clinical Medication</span>
+            <h3>Electronic Prescription Service (EPS) & Pharmacy Renewal</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Track hospital-dispensed medications, submit repeat prescription requests, and route approved electronic tokens directly to local community pharmacies.</p>
+            <div style="margin-bottom:0.5rem; font-size:0.8rem; color:#475569;">
+              <strong>Audience:</strong> Outpatients on ongoing clinical care regimens.
+            </div>
+            <div style="font-size:0.8rem; background:#f1f5f9; padding:0.5rem; border-radius:0.375rem;">
+              <strong>Technical Delivery:</strong> Compliant with NHS England Spine Electronic Prescription Service API with end-to-end cryptographic digital signatures.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge">Urgent Care</span>
+            <h3>Emergency Department (A&E) Live Wait-Time Tracker</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Real-time estimated triage and wait-time indicators for adult and paediatric emergency departments across Manchester hospital sites.</p>
+            <div style="margin-bottom:0.5rem; font-size:0.8rem; color:#475569;">
+              <strong>Audience:</strong> Public seeking urgent medical care and ambulance routing services.
+            </div>
+            <div style="font-size:0.8rem; background:#f1f5f9; padding:0.5rem; border-radius:0.375rem;">
+              <strong>Technical Delivery:</strong> Aggregated queue metrics pushed via Server-Sent Events (SSE) every 5 minutes from Symphony clinical triage systems.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge">Public Health Guidance</span>
+            <h3>Verified Clinical Health Information & Advice</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Evidence-based medical guides covering surgical procedures, disease management, fasting instructions, and post-operative recovery.</p>
+            <div style="margin-bottom:0.5rem; font-size:0.8rem; color:#475569;">
+              <strong>Audience:</strong> Patients preparing for surgery and the general public.
+            </div>
+            <div style="font-size:0.8rem; background:#f1f5f9; padding:0.5rem; border-radius:0.375rem;">
+              <strong>Technical Delivery:</strong> Content syndication consuming the national NHS.UK Content API, styled using the official NHS digital design system.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge">Family & Visitor Services</span>
+            <h3>Hospital Ward Visitor Information & Chaplaincy Support</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Visiting hour timetables, infection prevention protocols, hospital car parking maps, disabled access guides, and bereavement support.</p>
+            <div style="margin-bottom:0.5rem; font-size:0.8rem; color:#475569;">
+              <strong>Audience:</strong> Relatives, visitors, and patient transport drivers.
+            </div>
+            <div style="font-size:0.8rem; background:#f1f5f9; padding:0.5rem; border-radius:0.375rem;">
+              <strong>Technical Delivery:</strong> Mobile-responsive, geolocation-aware interactive map interfaces using Leaflet and accessible SVG campus blueprints.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge">Research & Innovation</span>
+            <h3>Clinical Trials & Medical Research Registration</h3>
+            <p style="color:#64748b; font-size:0.9rem; margin-bottom:1rem;">Search open clinical research studies, check patient eligibility criteria, and register voluntary interest in academic medical trials.</p>
+            <div style="margin-bottom:0.5rem; font-size:0.8rem; color:#475569;">
+              <strong>Audience:</strong> Patients and healthy volunteers interested in advancing clinical science.
+            </div>
+            <div style="font-size:0.8rem; background:#f1f5f9; padding:0.5rem; border-radius:0.375rem;">
+              <strong>Technical Delivery:</strong> Secure encrypted web forms routing anonymised screening questionnaires to the Manchester Clinical Research Facility.
+            </div>
+          </div>
+        
+      </div>
+    </section>
+
+    <!-- PAGE 4: ARCHITECTURE -->
+    <section id="page-architecture" class="page-section">
+      <h2 style="font-size:1.75rem; margin-bottom:0.5rem;">Web Architecture & Technology Stack</h2>
+      <p style="color:#64748b; margin-bottom:1rem;">BTEC Level 3 Computing technical specification of frontend, backend, APIs, and infrastructure.</p>
+
+      <div class="card" style="margin-bottom:2rem; background:#f8fafc;">
+        <h3>System Architecture Overview</h3>
+        <p style="margin-bottom:0.75rem;">The NHS Trust web architecture must adhere to the highest UK public health data governance standards. Built with the open-source NHS digital design system, the web application integrates seamlessly with the national NHS Spine, electronic patient records (EPR), and regional Health and Social Care Networks (HSCN) while rigorously isolating confidential patient data from public-facing content.</p>
+        <div style="font-size:0.85rem; color:#475569;">
+          <strong>Data Pipeline:</strong> Public Internet Client -> WAF & Cloudflare CDN -> NHS Digital Design System (React SSR) -> API Gateway with NHS Login (OIDC OAuth2) -> FHIR / HL7 Middleware -> Secure Internal HSCN Network -> Epic Electronic Patient Record (EPR) & SQL Server Database clusters.
+        </div>
+      </div>
+
+      <div class="card-grid">
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">Semantic HTML5, NHS Frontend Components, WAI-ARIA 1.2, WCAG 2.2 AAA</span>
+            <h3>HTML5 Semantic Markup & NHS Digital Design System</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">In healthcare, accessibility is a matter of patient safety. The NHS Trust website uses NHS Frontend markup ensuring clear landmarks (<main>, <nav>, <header>), high-contrast callout boxes, and descriptive button labels (e.g., "Confirm and book cardiology appointment" rather than vague "Click here"). This guarantees patients with motor impairments, visual loss, or dyslexia can navigate vital medical resources.</p>
+            <div class="code-box"><div class="nhsuk-warning-callout" role="alert">
+  <h3 class="nhsuk-warning-callout__label"><span role="text"><span class="nhsuk-u-visually-hidden">Important: </span>Fasting Instructions</span></h3>
+  <p>Do not eat or drink anything except water for 6 hours prior to your surgical procedure.</p>
+</div></div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: NHS websites must meet WCAG 2.2 AA at minimum, with key patient journeys targeting AAA standards under the Equality Act 2010.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">CSS3, NHS Design System SASS, Focus Indicators, Print Stylesheets</span>
+            <h3>Cascading Style Sheets (CSS3 & NHS Design Tokens)</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">CSS enforces the internationally recognised NHS Blue (#005EB8) colour palette, which instils immediate patient trust. Crucially, yellow-and-black 4px high-visibility focus rings are applied to every interactive link and form field for keyboard navigation. Bespoke print media stylesheets format appointment confirmations onto standard A4 paper without headers or banners.</p>
+            <div class="code-box">a:focus, button:focus {
+  outline: 4px solid #ffeb3b;
+  outline-offset: 0;
+  background-color: #212b32;
+  color: #ffffff;
+}</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: High-contrast focus outlines allow patients unable to use a computer mouse to navigate through appointment forms using only keyboard TAB and ENTER keys.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">TypeScript, React 19, Vanilla JS fallbacks, Font-Resizer Engine, High Contrast Toggle</span>
+            <h3>JavaScript & Client-Side Accessibility Controls</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">JavaScript provides dynamic features including hospital clinic search filters, department search autocompletion, and an accessible font-size scaling toolbar. In strict adherence to progressive enhancement, if JavaScript fails to execute, standard HTML forms still submit cleanly to server endpoints via HTTP POST.</p>
+            <div class="code-box">// Validating 10-digit NHS Number using Modulus 11 algorithm
+function validateNHSNumber(nhsNo: string): boolean {
+  if (!/^\d{10}$/.test(nhsNo)) return false;
+  const weights = [10, 9, 8, 7, 6, 5, 4, 3, 2];
+  const sum = nhsNo.slice(0, 9).split("").reduce((acc, digit, idx) => acc + Number(digit) * weights[idx], 0);
+  const remainder = sum % 11;
+  const checkDigit = remainder === 0 ? 0 : 11 - remainder;
+  return checkDigit !== 10 && checkDigit === Number(nhsNo[9]);
+}</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: Client-side validation checks NHS numbers using the Modulus 11 mathematical checksum algorithm before transmitting requests over the network.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">Fast Healthcare Interoperability Resources (FHIR) JSON APIs, RESTful Endpoints, NHS Spine MESH</span>
+            <h3>Application Programming Interfaces (APIs & HL7/FHIR)</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">Healthcare systems rely on international FHIR standards to safely transmit appointment dates, doctor notes, and prescription tokens. FHIR represents clinical concepts (Patient, Observation, Encounter, MedicationRequest) in standardized JSON structures, preventing misinterpretation between GP surgery software and acute hospital databases.</p>
+            <div class="code-box">GET /fhir/r4/Appointment?patient=9434765919
+Authorization: Bearer nhs-token-f89a742
+Accept: application/fhir+json</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: FHIR REST APIs use OAuth2 Bearer tokens with strict role-based scopes (e.g., patient/*.read), preventing unauthorized staff from viewing medical records outside their clinical ward.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">Wagtail / Umbraco Headless CMS, NHS England Syndication API</span>
+            <h3>Content Management System (CMS)</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">Hospital clinic details, consultant bios, ward telephone numbers, and public health guidelines are maintained in an enterprise headless CMS. Clinical content authors must undergo strict clinical governance approval before any health guidance page is published to the live public server.</p>
+            <div class="code-box">CMS Publication Gate: Draft Created -> Medical Peer Review -> Clinical Governance Lead Sign-off -> Automated Staging Build -> Live Site Deployment.</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: Four-eyes principle: Clinical information must be drafted by a medical communications officer and approved by a Consultant Physician before publication.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">Microsoft SQL Server Enterprise, Azure Cosmos DB, Encrypted TDE, Audit Logging</span>
+            <h3>Database Architecture & Secure Data Storage</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">Patient appointment bookings and hospital department directories are stored in highly secure, fault-tolerant Microsoft SQL Server clusters hosted in UK-sovereign data centres. Transparent Data Encryption (TDE) protects data at rest using AES-256 bit keys. Immutable audit tables record every single database SELECT query with user ID, timestamp, and patient identifier.</p>
+            <div class="code-box">SELECT appointment_id, clinic_code, slot_time FROM outpatient_bookings WHERE nhs_number_hash = @hash AND status = 'CONFIRMED';</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: The Data Protection Act 2018 legally requires comprehensive audit trails so that any unauthorised browsing of celebrity or family patient records can be prosecuted.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">Microsoft Azure UK South (London) & UK West (Cardiff), Health and Social Care Network (HSCN)</span>
+            <h3>Cloud & Hybrid Hosting Infrastructure</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">The public-facing website is hosted on Microsoft Azure UK sovereign cloud regions, which meet the NHS Cloud Security Principles. The infrastructure connects via dedicated encrypted leased lines to the Health and Social Care Network (HSCN), ensuring clinical backend traffic never traverses the public internet without IPsec encapsulation.</p>
+            <div class="code-box">Azure Virtual Network Peering with Network Security Groups (NSGs) restricting ingress traffic exclusively to port 443 via Azure Application Gateway WAF.</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: Dual-zone UK hosting ensures data sovereignty—patient personal identifiable information (PII) never leaves United Kingdom legal jurisdiction.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">Cloudflare UK Public Sector Edge, Fastly CDN, Anycast DNS</span>
+            <h3>Content Delivery Network (CDN) & Edge Security</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">Static medical guides, hospital parking maps, and clinical guidelines are cached across UK edge nodes. When health campaigns (such as winter flu vaccinations or pandemic advisories) drive millions of simultaneous visitors, the edge CDN absorbs the surge, protecting hospital clinical databases from crashing.</p>
+            <div class="code-box">Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
+Pragma: no-cache
+Expires: 0</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: CDN caching is strictly disabled for any authenticated patient portal pages via Cache-Control: private, no-store, no-cache headers.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">TLS 1.3 with ECDHE key exchange, AES-GCM 256-bit encryption, DNSSEC</span>
+            <h3>HTTPS, TLS 1.3 & Encrypted Web Forms</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">All web traffic is encrypted using TLS 1.3. Patient contact forms, appointment requests, and prescription queries are encrypted in transit. Form fields sanitize inputs against SQL injection and cross-site scripting before encrypting payloads with public key cryptography for database storage.</p>
+            <div class="code-box">Content-Security-Policy: default-src 'self'; form-action 'self' https://portal.mft.nhs.uk;
+X-Content-Type-Options: nosniff;</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: Prevents packet sniffing on public hospital Wi-Fi networks where patients and visitors frequently access the portal from bedside devices.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">NHS Login (OIDC / OAuth 2.0), FIDO2 Biometrics, Two-Factor Authentication (2FA)</span>
+            <h3>Authentication & NHS Login Integration</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">Patients authenticate using the national NHS Login service. NHS Login validates patient identity to Level 3 (high) proofing using passport/driving licence photo matching. Once verified, cryptographic OIDC tokens grant access to view hospital outpatient appointments and clinical letters.</p>
+            <div class="code-box">GET /authorize?client_id=mft-portal&response_type=code&scope=openid+profile+nhs_number&redirect_uri=https://mft.nhs.uk/auth/callback</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: Two-factor authentication (SMS OTP or authenticator app) is mandatory for patients accessing sensitive clinical letters, adhering to Caldicott Principle 7.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">Microsoft Sentinel SIEM, Azure Monitor, Splunk, NHS Cyber Associates Network Alerts</span>
+            <h3>Real-Time Health System Monitoring & SIEM</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">The Trust’s Cyber Security Operations Centre operates 24/7 Security Information and Event Management (SIEM). Automated correlation rules detect anomalous patient data access, repeated failed authentication attempts, and unrecognised API calls across all hospital networks.</p>
+            <div class="code-box">Sentinel KQL Query: SecurityEvent | where EventID == 4625 | summarize FailedLogins=count() by TargetAccount, bin(TimeGenerated, 10m) | where FailedLogins > 5</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: Threshold alerts trigger automated account lockout if more than 5 failed login attempts occur within 10 minutes.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge" style="background:#e0f2fe; color:#0369a1;">Immutable Cloud Backups, Azure Site Recovery, Air-Gapped Off-Site Vaulting</span>
+            <h3>Disaster Recovery, Automated Backups & Ransomware Resilience</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:0.75rem;">Learning critical lessons from the 2017 global WannaCry ransomware incident, all database backups are immutably locked and mirrored to air-gapped secondary storage vaults. Automated failover tests run quarterly to verify that outpatient clinics can operate uninterrupted even if primary hospital data centres lose power.</p>
+            <div class="code-box">Automated geo-redundant backup executed every 15 minutes with cryptographic checksum verification and SHA-256 hash validation.</div>
+            <div class="level3-note">
+              <strong>Level 3 Grading Criteria:</strong> Level 3 Assessment Note: RTO (Recovery Time Objective) is under 15 minutes for clinical triage; RPO (Recovery Point Objective) is under 60 seconds of transaction logs.
+            </div>
+          </div>
+        
+      </div>
+    </section>
+
+    <!-- PAGE 5: SECURITY & RISKS -->
+    <section id="page-security" class="page-section">
+      <h2 style="font-size:1.75rem; margin-bottom:0.5rem;">Cybersecurity Risk Assessment & UK Legal Acts</h2>
+      <p style="color:#64748b; margin-bottom:1rem;">Threat modeling, attack vectors, defensive mitigations, and compliance statutes.</p>
+
+      <div class="card" style="margin-bottom:2rem;">
+        <h3>Regulatory Compliance Standards</h3>
+        <p style="margin-bottom:0.5rem;">The security of patient confidential data is paramount under UK law. The Trust complies with the UK General Data Protection Regulation (UK GDPR), Data Protection Act 2018, the Caldicott Principles, and the NHS Data Security and Protection Toolkit (DSPT). Stringent technical and organisational controls prevent patient record exfiltration, clinical disruption, and malicious cyber intrusion.</p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+          <span class="badge" style="background:#dcfce7; color:#166534;">NHS Data Security and Protection Toolkit (DSPT) — Standards Met</span><span class="badge" style="background:#dcfce7; color:#166534;">The Caldicott Principles (Caldicott 3 Review)</span><span class="badge" style="background:#dcfce7; color:#166534;">UK General Data Protection Regulation (UK GDPR Article 9: Special Category Data)</span><span class="badge" style="background:#dcfce7; color:#166534;">Data Protection Act 2018 (Section 170 Offences)</span><span class="badge" style="background:#dcfce7; color:#166534;">Cyber Essentials Plus Certification (NHS Digital Audited)</span><span class="badge" style="background:#dcfce7; color:#166534;">ISO/IEC 27001 Information Security Management</span>
+        </div>
+      </div>
+
+      <div class="card-grid">
+        
+          <div class="card">
+            <span class="badge risk-critical">Severity: CRITICAL</span>
+            <h3>Ransomware & Malware Attacks on Hospital Systems</h3>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Attack Vector:</strong> Spear-phishing emails containing malicious PDF macros, vulnerable remote desktop ports (RDP), unpatched VPN gateway software.</p>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Operational Impact:</strong> Malicious encryption of hospital databases and clinical scheduling systems could force ambulances to be diverted, delay cancer surgeries, and put patient lives at immediate physical risk (as seen during WannaCry in 2017).</p>
+            <div style="background:#f8fafc; padding:0.75rem; border-radius:0.375rem; font-size:0.85rem; margin-top:0.5rem; border-left:3px solid #10b981;">
+              <strong>Mitigation Strategy:</strong> Strict network segmentation separating clinical machinery from public web servers, Endpoint Detection and Response (EDR) software on all terminals, automated immutable backups, and mandatory employee cybersecurity awareness training.
+            </div>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:0.5rem;">
+              <strong>UK Legal Act:</strong> Computer Misuse Act 1990 Section 3, Health and Social Care Act 2012.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge risk-critical">Severity: CRITICAL</span>
+            <h3>Targeted NHS Patient Phishing & Smishing Scams</h3>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Attack Vector:</strong> SMS Sender ID spoofing, rogue telephone diallers, fraudulent web domain registrations (e.g. nhs-appointment-card.co.uk).</p>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Operational Impact:</strong> Cybercriminals send fake SMS messages imitating the NHS (e.g. "You are eligible for a free health check - pay £1.99 postage for your kit"), stealing bank cards and personal identity data from vulnerable elderly patients.</p>
+            <div style="background:#f8fafc; padding:0.75rem; border-radius:0.375rem; font-size:0.85rem; margin-top:0.5rem; border-left:3px solid #10b981;">
+              <strong>Mitigation Strategy:</strong> National SMS Sender ID Registry protection with mobile operators, automated domain takedown via NCSC Protective DNS, and public warning banners on official NHS portals.
+            </div>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:0.5rem;">
+              <strong>UK Legal Act:</strong> Fraud Act 2006, Privacy and Electronic Communications Regulations (PECR) 2003.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge risk-high">Severity: HIGH</span>
+            <h3>Unsafe Sharing & Unauthorised Browsing of Patient Records</h3>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Attack Vector:</strong> Misuse of legitimate privileged database access rights, shared user logins, unlocked clinical computers in hospital corridors.</p>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Operational Impact:</strong> Clinical or administrative staff viewing medical histories of neighbours, celebrities, or colleagues without a direct clinical care relationship, violating patient confidentiality and statutory privacy rights.</p>
+            <div style="background:#f8fafc; padding:0.75rem; border-radius:0.375rem; font-size:0.85rem; margin-top:0.5rem; border-left:3px solid #10b981;">
+              <strong>Mitigation Strategy:</strong> Role-Based Access Control (RBAC), smartcard tap-to-authenticate readers that lock the screen upon removal, and automated machine-learning audit algorithms that flag suspicious out-of-ward record accesses.
+            </div>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:0.5rem;">
+              <strong>UK Legal Act:</strong> Data Protection Act 2018 Section 170 (Unlawful obtaining of personal data — criminal offence), Caldicott Principles.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge risk-high">Severity: HIGH</span>
+            <h3>Insecure Web Forms & SQL Injection (SQLi)</h3>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Attack Vector:</strong> Unsanitized user input parameters passed directly to SQL query engines in older legacy web modules.</p>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Operational Impact:</strong> Vulnerabilities in public appointment booking forms or prescription renewal request forms could allow attackers to bypass authentication and dump entire patient tables.</p>
+            <div style="background:#f8fafc; padding:0.75rem; border-radius:0.375rem; font-size:0.85rem; margin-top:0.5rem; border-left:3px solid #10b981;">
+              <strong>Mitigation Strategy:</strong> Enforcement of parameterized SQL queries and Object-Relational Mappers (ORMs), Web Application Firewall (WAF) pattern inspection, and strict client and server-side data sanitization.
+            </div>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:0.5rem;">
+              <strong>UK Legal Act:</strong> UK GDPR Article 32 (Security of Processing), OWASP Top 10 A03:2021 Injection.
+            </div>
+          </div>
+        
+          <div class="card">
+            <span class="badge risk-high">Severity: HIGH</span>
+            <h3>Distributed Denial of Service (DDoS) on Appointment Portals</h3>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Attack Vector:</strong> Volumetric botnet UDP/HTTP traffic targeted at patient portal web servers.</p>
+            <p style="font-size:0.85rem; margin-bottom:0.5rem;"><strong>Operational Impact:</strong> Flooding the patient appointment booking portal prevents patients from viewing their surgical instructions, confirming pre-op assessments, or checking A&E wait times.</p>
+            <div style="background:#f8fafc; padding:0.75rem; border-radius:0.375rem; font-size:0.85rem; margin-top:0.5rem; border-left:3px solid #10b981;">
+              <strong>Mitigation Strategy:</strong> Cloudflare Magic Transit DDoS scrubbing, geo-blocking non-UK traffic during crisis periods, rate limiting per IP address, and high-availability multi-region load balancers.
+            </div>
+            <div style="font-size:0.75rem; color:#64748b; margin-top:0.5rem;">
+              <strong>UK Legal Act:</strong> Computer Misuse Act 1990 Section 3.
+            </div>
+          </div>
+        
+      </div>
+
+      <div class="card" style="margin-top:2rem;">
+        <h3>NCSC 5-Stage Incident Response Protocol</h3>
+        <p style="font-size:0.9rem; color:#334155; line-height:1.7;">The NHS Trust Cyber Incident Response Plan adheres to NHS England Cyber Security Operations Centre guidelines. In the event of a verified breach: 1) Clinical Gold Command is established immediately; 2) Affected network segments are severed to protect clinical devices; 3) The Department of Health and Social Care, NHS England, and the Information Commissioner’s Office (ICO) are notified within 72 hours; 4) Clinical business continuity procedures (paper-based backup charts) are activated; 5) Forensic recovery by accredited CREST incident responders.</p>
+      </div>
+    </section>
+
+    <!-- PAGE 6: REVIEWS -->
+    <section id="page-reviews" class="page-section">
+      <h2 style="font-size:1.75rem; margin-bottom:0.5rem;">Verified Public Reviews & Citizen Feedback</h2>
+      <p style="color:#64748b; margin-bottom:2rem;">Representative feedback collected across UK digital channels.</p>
+
+      <div class="card-grid">
+        
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span style="color:#eab308; font-size:1.1rem;">★★★★★</span>
+              <span style="font-size:0.75rem; color:#94a3b8;">12 September 2026</span>
+            </div>
+            <h3 style="font-size:1.05rem;">Rescheduling my scan online took less than two minutes</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:1rem;">"I received a text alert about my cardiology scan and used the patient portal to change the date to a Friday morning. Clear layout, large easy-to-read text, and I received an immediate confirmation email. Exemplary digital service."</p>
+            <div style="font-size:0.8rem; color:#64748b; border-top:1px solid #f1f5f9; padding-top:0.5rem;">
+              <strong>Eileen Davies</strong> (Outpatient Cardiology Patient) - Sale, Greater Manchester
+            </div>
+          </div>
+        
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span style="color:#eab308; font-size:1.1rem;">★★★★★</span>
+              <span style="font-size:0.75rem; color:#94a3b8;">05 September 2026</span>
+            </div>
+            <h3 style="font-size:1.05rem;">Live A&E wait-time tracker saved us hours of stress</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:1rem;">"When my six-year-old had an allergic reaction, checking the live paediatric emergency wait-time dashboard helped us choose between Oxford Road and Wythenshawe. Clean, transparent, and accurate information."</p>
+            <div style="font-size:0.8rem; color:#64748b; border-top:1px solid #f1f5f9; padding-top:0.5rem;">
+              <strong>Marcus O’Connor</strong> (Parent of Paediatric Inpatient) - Didsbury, Manchester
+            </div>
+          </div>
+        
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span style="color:#eab308; font-size:1.1rem;">★★★★☆</span>
+              <span style="font-size:0.75rem; color:#94a3b8;">29 August 2026</span>
+            </div>
+            <h3 style="font-size:1.05rem;">Electronic prescription renewal is reliable and safe</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:1rem;">"Requesting repeat insulin cartridges through the secure prescription form is fast. My GP and hospital clinic are always in sync, and my local pharmacy has the medicine ready within 24 hours."</p>
+            <div style="font-size:0.8rem; color:#64748b; border-top:1px solid #f1f5f9; padding-top:0.5rem;">
+              <strong>Fatima Al-Mansoor</strong> (Diabetes Clinic Patient) - Cheetham Hill, Manchester
+            </div>
+          </div>
+        
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span style="color:#eab308; font-size:1.1rem;">★★★★★</span>
+              <span style="font-size:0.75rem; color:#94a3b8;">20 August 2026</span>
+            </div>
+            <h3 style="font-size:1.05rem;">Physiotherapy exercise video guides were clear and accessible</h3>
+            <p style="font-size:0.85rem; color:#475569; margin-bottom:1rem;">"Following my knee replacement surgery, the accessible video guides and printable recovery checklists helped me regain mobility at home. Subtitles and audio descriptions were perfectly implemented."</p>
+            <div style="font-size:0.8rem; color:#64748b; border-top:1px solid #f1f5f9; padding-top:0.5rem;">
+              <strong>Robert Jenkins</strong> (Post-Operative Orthopaedic Patient) - Stockport, Greater Manchester
+            </div>
+          </div>
+        
+      </div>
+    </section>
+
+    <!-- PAGE 7: SITE MAP -->
+    <section id="page-sitemap" class="page-section">
+      <h2 style="font-size:1.75rem; margin-bottom:0.5rem;">Information Architecture & Site Map</h2>
+      <p style="color:#64748b; margin-bottom:2rem;">Hierarchical page topology and route resolutions for NHS Trust.</p>
+
+      <div class="card">
+        <h3>Root Domain: https://nhs.org.uk</h3>
+        <div style="margin-top:1.5rem; display:grid; gap:0.75rem;">
+          
+            <div style="background:#f8fafc; padding:0.75rem 1rem; border-radius:0.5rem; display:flex; justify-content:space-between; align-items:center; border:1px solid #e2e8f0;">
+              <div>
+                <strong>NHS Trust Home Portal</strong>
+                <div style="font-size:0.75rem; color:#64748b;">/?org=nhs&page=home &bull; Main hospital trust portal with emergency alerts, department search, A&E wait times, and clinic finder.</div>
+              </div>
+              <span class="badge" style="background:#dcfce7; color:#166534;">HTTP 200 OK</span>
+            </div>
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 8: USER FLOW -->
+    <section id="page-userflow" class="page-section">
+      <h2 style="font-size:1.75rem; margin-bottom:0.5rem;">User Flow Architecture: Outpatient Hospital Appointment Booking & NHS Login Verification Flow</h2>
+      <p style="color:#64748b; margin-bottom:2rem;">Objective: Illustrate the secure digital journey of an NHS patient receiving a referral, authenticating via NHS Login (OAuth 2.0 / OIDC), selecting a specialist clinic time, and synchronising with hospital Electronic Patient Records.</p>
+
+      <div class="card" style="padding:2rem;">
+        
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size:1.1rem;">Patient Receives Hospital Referral & Opens Portal</h3>
+              <span class="badge">User</span>
+            </div>
+            <p style="font-size:0.9rem; color:#334155; margin:0.5rem 0;"><strong>Action:</strong> Patient clicks secure link from SMS/letter or navigates to mft.nhs.uk/appointments.</p>
+            <div style="background:#f1f5f9; padding:0.6rem; border-radius:0.375rem; font-size:0.8rem; color:#475569;">
+              <strong>Technical Execution:</strong> Frontend loads accessible NHS design system layout, providing instant font-scaling controls and high-contrast toggle.
+            </div>
+            
+          </div>
+        
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size:1.1rem;">Authentication via National NHS Login Gateway</h3>
+              <span class="badge">API Gateway</span>
+            </div>
+            <p style="font-size:0.9rem; color:#334155; margin:0.5rem 0;"><strong>Action:</strong> Redirects patient to access.login.nhs.uk using OpenID Connect authorization code grant flow with PKCE.</p>
+            <div style="background:#f1f5f9; padding:0.6rem; border-radius:0.375rem; font-size:0.8rem; color:#475569;">
+              <strong>Technical Execution:</strong> User enters email/password and passes biometric / SMS two-factor authentication (2FA). Returns signed JWT identity token.
+            </div>
+            <div style="font-size:0.75rem; color:#b91c1c; margin-top:0.25rem;"><strong>Exception Handling:</strong> If authentication fails, patient is offered manual phone booking via the Hospital Booking Team.</div>
+          </div>
+        
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size:1.1rem;">Query Patient Administration System (PAS) via FHIR API</h3>
+              <span class="badge">Backend Service</span>
+            </div>
+            <p style="font-size:0.9rem; color:#334155; margin:0.5rem 0;"><strong>Action:</strong> MFT backend sends authenticated FHIR query to /fhir/r4/Slot?schedule.actor=Cardiology.</p>
+            <div style="background:#f1f5f9; padding:0.6rem; border-radius:0.375rem; font-size:0.8rem; color:#475569;">
+              <strong>Technical Execution:</strong> HSCN network proxy translates request to internal Electronic Patient Record (EPR) system and retrieves available 20-minute clinic slots.
+            </div>
+            
+          </div>
+        
+          <div class="step-card">
+            <div class="step-number">4</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size:1.1rem;">Patient Selects Clinic Slot & Submits Accessibility Needs</h3>
+              <span class="badge">Client Frontend</span>
+            </div>
+            <p style="font-size:0.9rem; color:#334155; margin:0.5rem 0;"><strong>Action:</strong> Patient chooses Friday 10:30 AM at Manchester Royal Infirmary and requests British Sign Language (BSL) interpreter.</p>
+            <div style="background:#f1f5f9; padding:0.6rem; border-radius:0.375rem; font-size:0.8rem; color:#475569;">
+              <strong>Technical Execution:</strong> Client-side form validates input, encapsulates BSL requirement tag, and submits JSON payload via HTTPS POST.
+            </div>
+            
+          </div>
+        
+          <div class="step-card">
+            <div class="step-number">5</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size:1.1rem;">Atomic Database Transaction & Slot Lock</h3>
+              <span class="badge">Database / External</span>
+            </div>
+            <p style="font-size:0.9rem; color:#334155; margin:0.5rem 0;"><strong>Action:</strong> Microsoft SQL Server executes ACID transaction locking the clinic slot to prevent double-booking.</p>
+            <div style="background:#f1f5f9; padding:0.6rem; border-radius:0.375rem; font-size:0.8rem; color:#475569;">
+              <strong>Technical Execution:</strong> Transaction updates appointment status to BOOKED, records patient NHS number hash, and logs audit record with clinical staff ID.
+            </div>
+            <div style="font-size:0.75rem; color:#b91c1c; margin-top:0.25rem;"><strong>Exception Handling:</strong> If slot was taken concurrently, rolls back transaction and offers next available alternative timeslot.</div>
+          </div>
+        
+          <div class="step-card">
+            <div class="step-number">6</div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size:1.1rem;">Confirmation SMS/Email Dispatch & Calendar Sync</h3>
+              <span class="badge">Backend Service</span>
+            </div>
+            <p style="font-size:0.9rem; color:#334155; margin:0.5rem 0;"><strong>Action:</strong> Dispatches secure confirmation token via NHS Notify service and generates downloadable .ics calendar file.</p>
+            <div style="background:#f1f5f9; padding:0.6rem; border-radius:0.375rem; font-size:0.8rem; color:#475569;">
+              <strong>Technical Execution:</strong> Sends encrypted SMS with appointment reference number (e.g. MFT-CARD-82910) and parking/fasting directions.
+            </div>
+            
+          </div>
+        
+      </div>
+    </section>
+
+    <!-- PAGE 9: CONTACT -->
+    <section id="page-contact" class="page-section">
+      <h2 style="font-size:1.75rem; margin-bottom:0.5rem;">Contact & Public Enquiry Switchboard</h2>
+      <p style="color:#64748b; margin-bottom:2rem;">Official correspondence channels and interactive contact ticketing.</p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:2rem;">
+        <div class="card">
+          <h3>Interactive Web Enquiry</h3>
+          <form onsubmit="handleContactSubmit(event)">
+            <label style="font-size:0.85rem; font-weight:600;">Full Name</label>
+            <input type="text" id="contact-name" placeholder="e.g. Jane Doe" required>
+
+            <label style="font-size:0.85rem; font-weight:600;">Email Address</label>
+            <input type="email" id="contact-email" placeholder="e.g. jane.doe@example.co.uk" required>
+
+            <label style="font-size:0.85rem; font-weight:600;">Department</label>
+            <select id="contact-dept">
+              <option value="Patient Advice and Liaison Service (PALS)">Patient Advice and Liaison Service (PALS)</option><option value="Outpatient Appointment Booking Centre">Outpatient Appointment Booking Centre</option><option value="Hospital Pharmacy & Electronic Prescriptions">Hospital Pharmacy & Electronic Prescriptions</option><option value="Clinical Governance & Medical Records Team">Clinical Governance & Medical Records Team</option><option value="Accessibility & Translation Support (BSL & Language)">Accessibility & Translation Support (BSL & Language)</option><option value="Recruitment & Volunteering Services">Recruitment & Volunteering Services</option>
+            </select>
+
+            <label style="font-size:0.85rem; font-weight:600;">Message Enquiry</label>
+            <textarea id="contact-msg" rows="4" placeholder="Type your enquiry..." required></textarea>
+
+            <button type="submit" class="btn" style="width:100%;">Submit Official Enquiry</button>
+          </form>
+          <div id="contact-result" style="display:none; margin-top:1rem; padding:0.75rem; background:#dcfce7; color:#166534; border-radius:0.375rem; font-size:0.85rem;"></div>
+        </div>
+
+        <div class="card">
+          <h3>Official Directory Coordinates</h3>
+          <div style="margin-bottom:1rem; font-size:0.9rem;">
+            <strong>Headquarters Address:</strong><br>
+            Trust Headquarters, Cobbett House, Oxford Road, Manchester M13 9WL, United Kingdom
+          </div>
+          <div style="margin-bottom:1rem; font-size:0.9rem;">
+            <strong>Telephone Switchboard:</strong><br>
+            0161 276 1234 (Main Hospital Switchboard)
+          </div>
+          
+            <div style="margin-bottom:1rem; font-size:0.9rem; color:#b91c1c;">
+              <strong>Emergency Line:</strong><br>
+              999 (Life-Threatening Emergency) or 111 (NHS Non-Emergency Medical Advice)
+            </div>
+          
+          <div style="margin-bottom:1rem; font-size:0.9rem;">
+            <strong>Enquiry Email:</strong><br>
+            patient.services@mft.nhs.uk
+          </div>
+          <div style="font-size:0.9rem;">
+            <strong>Operational Hours:</strong><br>
+            Hospital Switchboard: 24/7. Outpatient Booking Centre: Monday to Friday: 08:30 – 17:00
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div>
+        <strong style="color:white; font-size:1rem;">Manchester University NHS Foundation Trust</strong>
+        <p style="margin-top:0.5rem; max-width:400px;">Delivering Outstanding Patient Care, Clinical Research & Digital Health Services Across Greater Manchester</p>
+        <p style="font-size:0.75rem; margin-top:0.5rem;">Regulated under: Care Quality Commission (CQC) & Information Commissioner’s Office (ICO)</p>
+      </div>
+      <div>
+        <strong style="color:white;">Specification Details</strong>
+        <p style="margin-top:0.5rem;">Unit: Web Development & Architecture</p>
+        <p>Level: UK Level 3 BTEC / Applied General</p>
+        <p>Standards: WCAG 2.2 AA &bull; UK GDPR &bull; TLS 1.3</p>
+      </div>
+    </div>
+    <div style="max-width:1200px; margin:2rem auto 0; padding-top:1.5rem; border-top:1px solid #1e293b; text-align:center; font-size:0.75rem;">
+      &copy; 2026 Manchester University NHS Foundation Trust. Single-File Offline Web Specification. Open in any browser without web servers.
+    </div>
+  </footer>
+
+  <script>
+    function switchPage(pageId) {
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('#nav button').forEach(btn => btn.classList.remove('active'));
+      
+      const targetSec = document.getElementById('page-' + pageId);
+      if (targetSec) targetSec.classList.add('active');
+
+      const buttons = document.querySelectorAll('#nav button');
+      buttons.forEach(btn => {
+        if (btn.getAttribute('onclick').includes("'" + pageId + "'")) {
+          btn.classList.add('active');
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('contact-name').value;
+      const dept = document.getElementById('contact-dept').value;
+      const refCode = 'NHS-' + Math.floor(100000 + Math.random() * 900000);
+      const res = document.getElementById('contact-result');
+      res.style.display = 'block';
+      res.innerHTML = '<strong>Enquiry Logged!</strong> Thank you ' + name + '. Reference: <code>' + refCode + '</code> routed to ' + dept + '. An automated receipt has been simulated.';
+      e.target.reset();
+    }
+  </script>
+</body>
+</html>

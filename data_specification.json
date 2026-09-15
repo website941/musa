@@ -1,0 +1,430 @@
+{
+  "id": "nhs",
+  "name": "Manchester University NHS Foundation Trust",
+  "shortName": "NHS Trust",
+  "tagline": "Delivering Outstanding Patient Care, Clinical Research & Digital Health Services Across Greater Manchester",
+  "sector": "UK Public Healthcare & National Health Service",
+  "headquarters": "Cobbett House, Oxford Road, Manchester M13 9WL",
+  "founded": "5 July 1948 (Merged Foundation Trust established October 2017)",
+  "governance": "NHS Trust Board of Directors & Council of Governors, accountable to NHS England & CQC",
+  "regulator": "Care Quality Commission (CQC) & Information Commissioner’s Office (ICO)",
+  "brandColors": {
+    "primary": "#005EB8",
+    "primaryHover": "#003087",
+    "secondary": "#003087",
+    "accent": "#DA291C",
+    "textLight": "#FFFFFF",
+    "bgHeader": "#005EB8",
+    "badgeBg": "#E0F2FE",
+    "badgeText": "#0369A1"
+  },
+  "overview": "Manchester University NHS Foundation Trust (MFT) is one of the largest acute NHS trusts in the UK, operating 10 hospital sites including Manchester Royal Infirmary, Royal Manchester Children’s Hospital, and Saint Mary’s Hospital. Its digital patient portal and web services coordinate outpatient bookings, electronic prescriptions, clinical trial information, and emergency department wait-time telemetry for over 750,000 residents.",
+  "heroHeadline": "Accessible, Compassionate and Secure Healthcare for Greater Manchester",
+  "heroSubtext": "Manage hospital outpatient appointments, check emergency department wait times, access verified clinical guidance, request prescription renewals, and communicate safely with your NHS clinical care team.",
+  "interactiveWidgetType": "nhs-clinic",
+  "images": [
+    {
+      "url": "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Manchester Royal Infirmary Main Hospital Wing & Emergency Care Facility",
+      "alt": "Modern hospital entrance with ambulance bays and pedestrian walkways",
+      "tag": "Hospital Infrastructure"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Consultant Physician Reviewing Patient Electronic Health Records (EHR)",
+      "alt": "NHS doctor consulting with a patient using a secure digital hospital tablet",
+      "tag": "Clinical Care & EHR"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Advanced Diagnostic Radiology & MRI Medical Imaging Suite",
+      "alt": "High-tech medical diagnostic scanner and sterile clinical preparation room",
+      "tag": "Diagnostic Imaging"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=1200&q=80",
+      "caption": "Hospital Pharmacy & Electronic Prescription Service (EPS) Dispensary",
+      "alt": "Qualified NHS pharmacist verifying electronic prescriptions and medical supplies",
+      "tag": "Prescription Services"
+    },
+    {
+      "url": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80",
+      "caption": "NHS Digital Informatics Centre & Clinical Cyber Security Command",
+      "alt": "Healthcare IT specialist monitoring server uptime and encrypted patient database",
+      "tag": "Digital Health Informatics"
+    }
+  ],
+  "services": [
+    {
+      "title": "Patient Portal & Outpatient Appointment Booking",
+      "category": "Patient Administration",
+      "description": "View upcoming hospital appointments, reschedule clinic dates, access appointment letter PDFs, and receive SMS reminder notifications.",
+      "technicalDelivery": "Secure REST API integration connecting the front-end patient portal to the Trust’s central Patient Administration System (PAS) via NHS login.",
+      "audience": "Referred NHS patients and authorised family carers."
+    },
+    {
+      "title": "Electronic Prescription Service (EPS) & Pharmacy Renewal",
+      "category": "Clinical Medication",
+      "description": "Track hospital-dispensed medications, submit repeat prescription requests, and route approved electronic tokens directly to local community pharmacies.",
+      "technicalDelivery": "Compliant with NHS England Spine Electronic Prescription Service API with end-to-end cryptographic digital signatures.",
+      "audience": "Outpatients on ongoing clinical care regimens."
+    },
+    {
+      "title": "Emergency Department (A&E) Live Wait-Time Tracker",
+      "category": "Urgent Care",
+      "description": "Real-time estimated triage and wait-time indicators for adult and paediatric emergency departments across Manchester hospital sites.",
+      "technicalDelivery": "Aggregated queue metrics pushed via Server-Sent Events (SSE) every 5 minutes from Symphony clinical triage systems.",
+      "audience": "Public seeking urgent medical care and ambulance routing services."
+    },
+    {
+      "title": "Verified Clinical Health Information & Advice",
+      "category": "Public Health Guidance",
+      "description": "Evidence-based medical guides covering surgical procedures, disease management, fasting instructions, and post-operative recovery.",
+      "technicalDelivery": "Content syndication consuming the national NHS.UK Content API, styled using the official NHS digital design system.",
+      "audience": "Patients preparing for surgery and the general public."
+    },
+    {
+      "title": "Hospital Ward Visitor Information & Chaplaincy Support",
+      "category": "Family & Visitor Services",
+      "description": "Visiting hour timetables, infection prevention protocols, hospital car parking maps, disabled access guides, and bereavement support.",
+      "technicalDelivery": "Mobile-responsive, geolocation-aware interactive map interfaces using Leaflet and accessible SVG campus blueprints.",
+      "audience": "Relatives, visitors, and patient transport drivers."
+    },
+    {
+      "title": "Clinical Trials & Medical Research Registration",
+      "category": "Research & Innovation",
+      "description": "Search open clinical research studies, check patient eligibility criteria, and register voluntary interest in academic medical trials.",
+      "technicalDelivery": "Secure encrypted web forms routing anonymised screening questionnaires to the Manchester Clinical Research Facility.",
+      "audience": "Patients and healthy volunteers interested in advancing clinical science."
+    }
+  ],
+  "architecture": {
+    "summary": "The NHS Trust web architecture must adhere to the highest UK public health data governance standards. Built with the open-source NHS digital design system, the web application integrates seamlessly with the national NHS Spine, electronic patient records (EPR), and regional Health and Social Care Networks (HSCN) while rigorously isolating confidential patient data from public-facing content.",
+    "diagramDescription": "Public Internet Client -> WAF & Cloudflare CDN -> NHS Digital Design System (React SSR) -> API Gateway with NHS Login (OIDC OAuth2) -> FHIR / HL7 Middleware -> Secure Internal HSCN Network -> Epic Electronic Patient Record (EPR) & SQL Server Database clusters.",
+    "components": [
+      {
+        "title": "HTML5 Semantic Markup & NHS Digital Design System",
+        "tech": "Semantic HTML5, NHS Frontend Components, WAI-ARIA 1.2, WCAG 2.2 AAA",
+        "explanation": "In healthcare, accessibility is a matter of patient safety. The NHS Trust website uses NHS Frontend markup ensuring clear landmarks (<main>, <nav>, <header>), high-contrast callout boxes, and descriptive button labels (e.g., \"Confirm and book cardiology appointment\" rather than vague \"Click here\"). This guarantees patients with motor impairments, visual loss, or dyslexia can navigate vital medical resources.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: NHS websites must meet WCAG 2.2 AA at minimum, with key patient journeys targeting AAA standards under the Equality Act 2010.",
+        "implementationExample": "<div class=\"nhsuk-warning-callout\" role=\"alert\">\n  <h3 class=\"nhsuk-warning-callout__label\"><span role=\"text\"><span class=\"nhsuk-u-visually-hidden\">Important: </span>Fasting Instructions</span></h3>\n  <p>Do not eat or drink anything except water for 6 hours prior to your surgical procedure.</p>\n</div>"
+      },
+      {
+        "title": "Cascading Style Sheets (CSS3 & NHS Design Tokens)",
+        "tech": "CSS3, NHS Design System SASS, Focus Indicators, Print Stylesheets",
+        "explanation": "CSS enforces the internationally recognised NHS Blue (#005EB8) colour palette, which instils immediate patient trust. Crucially, yellow-and-black 4px high-visibility focus rings are applied to every interactive link and form field for keyboard navigation. Bespoke print media stylesheets format appointment confirmations onto standard A4 paper without headers or banners.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: High-contrast focus outlines allow patients unable to use a computer mouse to navigate through appointment forms using only keyboard TAB and ENTER keys.",
+        "implementationExample": "a:focus, button:focus {\n  outline: 4px solid #ffeb3b;\n  outline-offset: 0;\n  background-color: #212b32;\n  color: #ffffff;\n}"
+      },
+      {
+        "title": "JavaScript & Client-Side Accessibility Controls",
+        "tech": "TypeScript, React 19, Vanilla JS fallbacks, Font-Resizer Engine, High Contrast Toggle",
+        "explanation": "JavaScript provides dynamic features including hospital clinic search filters, department search autocompletion, and an accessible font-size scaling toolbar. In strict adherence to progressive enhancement, if JavaScript fails to execute, standard HTML forms still submit cleanly to server endpoints via HTTP POST.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: Client-side validation checks NHS numbers using the Modulus 11 mathematical checksum algorithm before transmitting requests over the network.",
+        "implementationExample": "// Validating 10-digit NHS Number using Modulus 11 algorithm\nfunction validateNHSNumber(nhsNo: string): boolean {\n  if (!/^\\d{10}$/.test(nhsNo)) return false;\n  const weights = [10, 9, 8, 7, 6, 5, 4, 3, 2];\n  const sum = nhsNo.slice(0, 9).split(\"\").reduce((acc, digit, idx) => acc + Number(digit) * weights[idx], 0);\n  const remainder = sum % 11;\n  const checkDigit = remainder === 0 ? 0 : 11 - remainder;\n  return checkDigit !== 10 && checkDigit === Number(nhsNo[9]);\n}"
+      },
+      {
+        "title": "Application Programming Interfaces (APIs & HL7/FHIR)",
+        "tech": "Fast Healthcare Interoperability Resources (FHIR) JSON APIs, RESTful Endpoints, NHS Spine MESH",
+        "explanation": "Healthcare systems rely on international FHIR standards to safely transmit appointment dates, doctor notes, and prescription tokens. FHIR represents clinical concepts (Patient, Observation, Encounter, MedicationRequest) in standardized JSON structures, preventing misinterpretation between GP surgery software and acute hospital databases.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: FHIR REST APIs use OAuth2 Bearer tokens with strict role-based scopes (e.g., patient/*.read), preventing unauthorized staff from viewing medical records outside their clinical ward.",
+        "implementationExample": "GET /fhir/r4/Appointment?patient=9434765919\nAuthorization: Bearer nhs-token-f89a742\nAccept: application/fhir+json"
+      },
+      {
+        "title": "Content Management System (CMS)",
+        "tech": "Wagtail / Umbraco Headless CMS, NHS England Syndication API",
+        "explanation": "Hospital clinic details, consultant bios, ward telephone numbers, and public health guidelines are maintained in an enterprise headless CMS. Clinical content authors must undergo strict clinical governance approval before any health guidance page is published to the live public server.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: Four-eyes principle: Clinical information must be drafted by a medical communications officer and approved by a Consultant Physician before publication.",
+        "implementationExample": "CMS Publication Gate: Draft Created -> Medical Peer Review -> Clinical Governance Lead Sign-off -> Automated Staging Build -> Live Site Deployment."
+      },
+      {
+        "title": "Database Architecture & Secure Data Storage",
+        "tech": "Microsoft SQL Server Enterprise, Azure Cosmos DB, Encrypted TDE, Audit Logging",
+        "explanation": "Patient appointment bookings and hospital department directories are stored in highly secure, fault-tolerant Microsoft SQL Server clusters hosted in UK-sovereign data centres. Transparent Data Encryption (TDE) protects data at rest using AES-256 bit keys. Immutable audit tables record every single database SELECT query with user ID, timestamp, and patient identifier.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: The Data Protection Act 2018 legally requires comprehensive audit trails so that any unauthorised browsing of celebrity or family patient records can be prosecuted.",
+        "implementationExample": "SELECT appointment_id, clinic_code, slot_time FROM outpatient_bookings WHERE nhs_number_hash = @hash AND status = 'CONFIRMED';"
+      },
+      {
+        "title": "Cloud & Hybrid Hosting Infrastructure",
+        "tech": "Microsoft Azure UK South (London) & UK West (Cardiff), Health and Social Care Network (HSCN)",
+        "explanation": "The public-facing website is hosted on Microsoft Azure UK sovereign cloud regions, which meet the NHS Cloud Security Principles. The infrastructure connects via dedicated encrypted leased lines to the Health and Social Care Network (HSCN), ensuring clinical backend traffic never traverses the public internet without IPsec encapsulation.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: Dual-zone UK hosting ensures data sovereignty—patient personal identifiable information (PII) never leaves United Kingdom legal jurisdiction.",
+        "implementationExample": "Azure Virtual Network Peering with Network Security Groups (NSGs) restricting ingress traffic exclusively to port 443 via Azure Application Gateway WAF."
+      },
+      {
+        "title": "Content Delivery Network (CDN) & Edge Security",
+        "tech": "Cloudflare UK Public Sector Edge, Fastly CDN, Anycast DNS",
+        "explanation": "Static medical guides, hospital parking maps, and clinical guidelines are cached across UK edge nodes. When health campaigns (such as winter flu vaccinations or pandemic advisories) drive millions of simultaneous visitors, the edge CDN absorbs the surge, protecting hospital clinical databases from crashing.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: CDN caching is strictly disabled for any authenticated patient portal pages via Cache-Control: private, no-store, no-cache headers.",
+        "implementationExample": "Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate\nPragma: no-cache\nExpires: 0"
+      },
+      {
+        "title": "HTTPS, TLS 1.3 & Encrypted Web Forms",
+        "tech": "TLS 1.3 with ECDHE key exchange, AES-GCM 256-bit encryption, DNSSEC",
+        "explanation": "All web traffic is encrypted using TLS 1.3. Patient contact forms, appointment requests, and prescription queries are encrypted in transit. Form fields sanitize inputs against SQL injection and cross-site scripting before encrypting payloads with public key cryptography for database storage.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: Prevents packet sniffing on public hospital Wi-Fi networks where patients and visitors frequently access the portal from bedside devices.",
+        "implementationExample": "Content-Security-Policy: default-src 'self'; form-action 'self' https://portal.mft.nhs.uk;\nX-Content-Type-Options: nosniff;"
+      },
+      {
+        "title": "Authentication & NHS Login Integration",
+        "tech": "NHS Login (OIDC / OAuth 2.0), FIDO2 Biometrics, Two-Factor Authentication (2FA)",
+        "explanation": "Patients authenticate using the national NHS Login service. NHS Login validates patient identity to Level 3 (high) proofing using passport/driving licence photo matching. Once verified, cryptographic OIDC tokens grant access to view hospital outpatient appointments and clinical letters.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: Two-factor authentication (SMS OTP or authenticator app) is mandatory for patients accessing sensitive clinical letters, adhering to Caldicott Principle 7.",
+        "implementationExample": "GET /authorize?client_id=mft-portal&response_type=code&scope=openid+profile+nhs_number&redirect_uri=https://mft.nhs.uk/auth/callback"
+      },
+      {
+        "title": "Real-Time Health System Monitoring & SIEM",
+        "tech": "Microsoft Sentinel SIEM, Azure Monitor, Splunk, NHS Cyber Associates Network Alerts",
+        "explanation": "The Trust’s Cyber Security Operations Centre operates 24/7 Security Information and Event Management (SIEM). Automated correlation rules detect anomalous patient data access, repeated failed authentication attempts, and unrecognised API calls across all hospital networks.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: Threshold alerts trigger automated account lockout if more than 5 failed login attempts occur within 10 minutes.",
+        "implementationExample": "Sentinel KQL Query: SecurityEvent | where EventID == 4625 | summarize FailedLogins=count() by TargetAccount, bin(TimeGenerated, 10m) | where FailedLogins > 5"
+      },
+      {
+        "title": "Disaster Recovery, Automated Backups & Ransomware Resilience",
+        "tech": "Immutable Cloud Backups, Azure Site Recovery, Air-Gapped Off-Site Vaulting",
+        "explanation": "Learning critical lessons from the 2017 global WannaCry ransomware incident, all database backups are immutably locked and mirrored to air-gapped secondary storage vaults. Automated failover tests run quarterly to verify that outpatient clinics can operate uninterrupted even if primary hospital data centres lose power.",
+        "educationalLevel3Notes": "Level 3 Assessment Note: RTO (Recovery Time Objective) is under 15 minutes for clinical triage; RPO (Recovery Point Objective) is under 60 seconds of transaction logs.",
+        "implementationExample": "Automated geo-redundant backup executed every 15 minutes with cryptographic checksum verification and SHA-256 hash validation."
+      }
+    ]
+  },
+  "security": {
+    "summary": "The security of patient confidential data is paramount under UK law. The Trust complies with the UK General Data Protection Regulation (UK GDPR), Data Protection Act 2018, the Caldicott Principles, and the NHS Data Security and Protection Toolkit (DSPT). Stringent technical and organisational controls prevent patient record exfiltration, clinical disruption, and malicious cyber intrusion.",
+    "complianceStandards": [
+      "NHS Data Security and Protection Toolkit (DSPT) — Standards Met",
+      "The Caldicott Principles (Caldicott 3 Review)",
+      "UK General Data Protection Regulation (UK GDPR Article 9: Special Category Data)",
+      "Data Protection Act 2018 (Section 170 Offences)",
+      "Cyber Essentials Plus Certification (NHS Digital Audited)",
+      "ISO/IEC 27001 Information Security Management"
+    ],
+    "risks": [
+      {
+        "threatName": "Ransomware & Malware Attacks on Hospital Systems",
+        "riskLevel": "Critical",
+        "impactDescription": "Malicious encryption of hospital databases and clinical scheduling systems could force ambulances to be diverted, delay cancer surgeries, and put patient lives at immediate physical risk (as seen during WannaCry in 2017).",
+        "attackVector": "Spear-phishing emails containing malicious PDF macros, vulnerable remote desktop ports (RDP), unpatched VPN gateway software.",
+        "mitigationStrategy": "Strict network segmentation separating clinical machinery from public web servers, Endpoint Detection and Response (EDR) software on all terminals, automated immutable backups, and mandatory employee cybersecurity awareness training.",
+        "ukLegalFramework": "Computer Misuse Act 1990 Section 3, Health and Social Care Act 2012."
+      },
+      {
+        "threatName": "Targeted NHS Patient Phishing & Smishing Scams",
+        "riskLevel": "Critical",
+        "impactDescription": "Cybercriminals send fake SMS messages imitating the NHS (e.g. \"You are eligible for a free health check - pay £1.99 postage for your kit\"), stealing bank cards and personal identity data from vulnerable elderly patients.",
+        "attackVector": "SMS Sender ID spoofing, rogue telephone diallers, fraudulent web domain registrations (e.g. nhs-appointment-card.co.uk).",
+        "mitigationStrategy": "National SMS Sender ID Registry protection with mobile operators, automated domain takedown via NCSC Protective DNS, and public warning banners on official NHS portals.",
+        "ukLegalFramework": "Fraud Act 2006, Privacy and Electronic Communications Regulations (PECR) 2003."
+      },
+      {
+        "threatName": "Unsafe Sharing & Unauthorised Browsing of Patient Records",
+        "riskLevel": "High",
+        "impactDescription": "Clinical or administrative staff viewing medical histories of neighbours, celebrities, or colleagues without a direct clinical care relationship, violating patient confidentiality and statutory privacy rights.",
+        "attackVector": "Misuse of legitimate privileged database access rights, shared user logins, unlocked clinical computers in hospital corridors.",
+        "mitigationStrategy": "Role-Based Access Control (RBAC), smartcard tap-to-authenticate readers that lock the screen upon removal, and automated machine-learning audit algorithms that flag suspicious out-of-ward record accesses.",
+        "ukLegalFramework": "Data Protection Act 2018 Section 170 (Unlawful obtaining of personal data — criminal offence), Caldicott Principles."
+      },
+      {
+        "threatName": "Insecure Web Forms & SQL Injection (SQLi)",
+        "riskLevel": "High",
+        "impactDescription": "Vulnerabilities in public appointment booking forms or prescription renewal request forms could allow attackers to bypass authentication and dump entire patient tables.",
+        "attackVector": "Unsanitized user input parameters passed directly to SQL query engines in older legacy web modules.",
+        "mitigationStrategy": "Enforcement of parameterized SQL queries and Object-Relational Mappers (ORMs), Web Application Firewall (WAF) pattern inspection, and strict client and server-side data sanitization.",
+        "ukLegalFramework": "UK GDPR Article 32 (Security of Processing), OWASP Top 10 A03:2021 Injection."
+      },
+      {
+        "threatName": "Distributed Denial of Service (DDoS) on Appointment Portals",
+        "riskLevel": "High",
+        "impactDescription": "Flooding the patient appointment booking portal prevents patients from viewing their surgical instructions, confirming pre-op assessments, or checking A&E wait times.",
+        "attackVector": "Volumetric botnet UDP/HTTP traffic targeted at patient portal web servers.",
+        "mitigationStrategy": "Cloudflare Magic Transit DDoS scrubbing, geo-blocking non-UK traffic during crisis periods, rate limiting per IP address, and high-availability multi-region load balancers.",
+        "ukLegalFramework": "Computer Misuse Act 1990 Section 3."
+      }
+    ],
+    "incidentResponsePlan": "The NHS Trust Cyber Incident Response Plan adheres to NHS England Cyber Security Operations Centre guidelines. In the event of a verified breach: 1) Clinical Gold Command is established immediately; 2) Affected network segments are severed to protect clinical devices; 3) The Department of Health and Social Care, NHS England, and the Information Commissioner’s Office (ICO) are notified within 72 hours; 4) Clinical business continuity procedures (paper-based backup charts) are activated; 5) Forensic recovery by accredited CREST incident responders."
+  },
+  "reviews": [
+    {
+      "id": "nhs-rev-1",
+      "author": "Eileen Davies",
+      "role": "Outpatient Cardiology Patient",
+      "location": "Sale, Greater Manchester",
+      "rating": 5,
+      "date": "12 September 2026",
+      "title": "Rescheduling my scan online took less than two minutes",
+      "comment": "I received a text alert about my cardiology scan and used the patient portal to change the date to a Friday morning. Clear layout, large easy-to-read text, and I received an immediate confirmation email. Exemplary digital service.",
+      "department": "Outpatient Appointments",
+      "verified": true
+    },
+    {
+      "id": "nhs-rev-2",
+      "author": "Marcus O’Connor",
+      "role": "Parent of Paediatric Inpatient",
+      "location": "Didsbury, Manchester",
+      "rating": 5,
+      "date": "05 September 2026",
+      "title": "Live A&E wait-time tracker saved us hours of stress",
+      "comment": "When my six-year-old had an allergic reaction, checking the live paediatric emergency wait-time dashboard helped us choose between Oxford Road and Wythenshawe. Clean, transparent, and accurate information.",
+      "department": "Emergency Medicine (A&E)",
+      "verified": true
+    },
+    {
+      "id": "nhs-rev-3",
+      "author": "Fatima Al-Mansoor",
+      "role": "Diabetes Clinic Patient",
+      "location": "Cheetham Hill, Manchester",
+      "rating": 4,
+      "date": "29 August 2026",
+      "title": "Electronic prescription renewal is reliable and safe",
+      "comment": "Requesting repeat insulin cartridges through the secure prescription form is fast. My GP and hospital clinic are always in sync, and my local pharmacy has the medicine ready within 24 hours.",
+      "department": "Hospital Pharmacy & EPS",
+      "verified": true
+    },
+    {
+      "id": "nhs-rev-4",
+      "author": "Robert Jenkins",
+      "role": "Post-Operative Orthopaedic Patient",
+      "location": "Stockport, Greater Manchester",
+      "rating": 5,
+      "date": "20 August 2026",
+      "title": "Physiotherapy exercise video guides were clear and accessible",
+      "comment": "Following my knee replacement surgery, the accessible video guides and printable recovery checklists helped me regain mobility at home. Subtitles and audio descriptions were perfectly implemented.",
+      "department": "Physiotherapy & Rehabilitation",
+      "verified": true
+    }
+  ],
+  "siteMap": [
+    {
+      "id": "nhs-sm-1",
+      "title": "NHS Trust Home Portal",
+      "path": "/?org=nhs&page=home",
+      "pageId": "home",
+      "description": "Main hospital trust portal with emergency alerts, department search, A&E wait times, and clinic finder.",
+      "children": [
+        {
+          "id": "nhs-sm-2",
+          "title": "About the Trust & Governance",
+          "path": "/?org=nhs&page=about",
+          "pageId": "about",
+          "description": "CQC ratings, Board of Directors, hospital sites, public governors, and NHS founding heritage."
+        },
+        {
+          "id": "nhs-sm-3",
+          "title": "Clinical Services & Clinics",
+          "path": "/?org=nhs&page=services",
+          "pageId": "services",
+          "description": "Outpatient appointments, pharmacy EPS, A&E tracker, clinical trials, and ward visiting times."
+        },
+        {
+          "id": "nhs-sm-4",
+          "title": "Web Architecture Specification",
+          "path": "/?org=nhs&page=architecture",
+          "pageId": "architecture",
+          "description": "Level 3 computing technical breakdown: NHS Design System, FHIR APIs, Azure sovereign cloud, and EPR.",
+          "badge": "Level 3 IT Core"
+        },
+        {
+          "id": "nhs-sm-5",
+          "title": "Cybersecurity & Caldicott Data Protection",
+          "path": "/?org=nhs&page=security",
+          "pageId": "security",
+          "description": "WannaCry lessons, anti-ransomware architecture, DSPT toolkit, UK GDPR, and patient privacy controls.",
+          "badge": "Patient Privacy"
+        },
+        {
+          "id": "nhs-sm-6",
+          "title": "Illustrative Patient Reviews",
+          "path": "/?org=nhs&page=reviews",
+          "pageId": "reviews",
+          "description": "Sample patient feedback and ratings clearly marked as illustrative educational submissions."
+        },
+        {
+          "id": "nhs-sm-7",
+          "title": "Visual Site Map",
+          "path": "/?org=nhs&page=sitemap",
+          "pageId": "sitemap",
+          "description": "Interactive diagram mapping patient navigation pathways across hospital digital portals."
+        },
+        {
+          "id": "nhs-sm-8",
+          "title": "Patient User Flow Simulation",
+          "path": "/?org=nhs&page=userflow",
+          "pageId": "userflow",
+          "description": "Step-by-step interactive diagram of an outpatient booking and NHS login authentication journey.",
+          "badge": "Interactive Flow"
+        },
+        {
+          "id": "nhs-sm-9",
+          "title": "Contact, PALS & Emergencies",
+          "path": "/?org=nhs&page=contact",
+          "pageId": "contact",
+          "description": "Patient Advice and Liaison Service (PALS), hospital switchboard, emergency numbers, and ward contact directory."
+        }
+      ]
+    }
+  ],
+  "userFlow": {
+    "flowName": "Outpatient Hospital Appointment Booking & NHS Login Verification Flow",
+    "objective": "Illustrate the secure digital journey of an NHS patient receiving a referral, authenticating via NHS Login (OAuth 2.0 / OIDC), selecting a specialist clinic time, and synchronising with hospital Electronic Patient Records.",
+    "steps": [
+      {
+        "stepNumber": 1,
+        "title": "Patient Receives Hospital Referral & Opens Portal",
+        "actor": "User",
+        "action": "Patient clicks secure link from SMS/letter or navigates to mft.nhs.uk/appointments.",
+        "technicalDetails": "Frontend loads accessible NHS design system layout, providing instant font-scaling controls and high-contrast toggle."
+      },
+      {
+        "stepNumber": 2,
+        "title": "Authentication via National NHS Login Gateway",
+        "actor": "API Gateway",
+        "action": "Redirects patient to access.login.nhs.uk using OpenID Connect authorization code grant flow with PKCE.",
+        "technicalDetails": "User enters email/password and passes biometric / SMS two-factor authentication (2FA). Returns signed JWT identity token.",
+        "failurePath": "If authentication fails, patient is offered manual phone booking via the Hospital Booking Team."
+      },
+      {
+        "stepNumber": 3,
+        "title": "Query Patient Administration System (PAS) via FHIR API",
+        "actor": "Backend Service",
+        "action": "MFT backend sends authenticated FHIR query to /fhir/r4/Slot?schedule.actor=Cardiology.",
+        "technicalDetails": "HSCN network proxy translates request to internal Electronic Patient Record (EPR) system and retrieves available 20-minute clinic slots."
+      },
+      {
+        "stepNumber": 4,
+        "title": "Patient Selects Clinic Slot & Submits Accessibility Needs",
+        "actor": "Client Frontend",
+        "action": "Patient chooses Friday 10:30 AM at Manchester Royal Infirmary and requests British Sign Language (BSL) interpreter.",
+        "technicalDetails": "Client-side form validates input, encapsulates BSL requirement tag, and submits JSON payload via HTTPS POST."
+      },
+      {
+        "stepNumber": 5,
+        "title": "Atomic Database Transaction & Slot Lock",
+        "actor": "Database / External",
+        "action": "Microsoft SQL Server executes ACID transaction locking the clinic slot to prevent double-booking.",
+        "technicalDetails": "Transaction updates appointment status to BOOKED, records patient NHS number hash, and logs audit record with clinical staff ID.",
+        "failurePath": "If slot was taken concurrently, rolls back transaction and offers next available alternative timeslot."
+      },
+      {
+        "stepNumber": 6,
+        "title": "Confirmation SMS/Email Dispatch & Calendar Sync",
+        "actor": "Backend Service",
+        "action": "Dispatches secure confirmation token via NHS Notify service and generates downloadable .ics calendar file.",
+        "technicalDetails": "Sends encrypted SMS with appointment reference number (e.g. MFT-CARD-82910) and parking/fasting directions."
+      }
+    ]
+  },
+  "contactInfo": {
+    "postalAddress": "Trust Headquarters, Cobbett House, Oxford Road, Manchester M13 9WL, United Kingdom",
+    "phone": "0161 276 1234 (Main Hospital Switchboard)",
+    "emergencyPhone": "999 (Life-Threatening Emergency) or 111 (NHS Non-Emergency Medical Advice)",
+    "email": "patient.services@mft.nhs.uk",
+    "hours": "Hospital Switchboard: 24/7. Outpatient Booking Centre: Monday to Friday: 08:30 – 17:00",
+    "departments": [
+      "Patient Advice and Liaison Service (PALS)",
+      "Outpatient Appointment Booking Centre",
+      "Hospital Pharmacy & Electronic Prescriptions",
+      "Clinical Governance & Medical Records Team",
+      "Accessibility & Translation Support (BSL & Language)",
+      "Recruitment & Volunteering Services"
+    ]
+  }
+}
